@@ -9,13 +9,15 @@ from app.utils.security import verify_password
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 from app.schemas.auth import LoginDTO
+import os
 import requests
 router = APIRouter()
 
-GOOGLE_CLIENT_ID  = "987558515214-9fh8s4vjojk18tt2sfci02qje1mb0jak.apps.googleusercontent.com"
-SECRET_KEY = "AMANDA_FERREIRA_CHAVE_SECRETA"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
+
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM")
+ACCESS_TOKEN_EXPIRE_MINUTES = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
 
 @router.post("/auth")
 def login(user: LoginDTO, db: Session = Depends(get_db)):

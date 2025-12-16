@@ -6,6 +6,9 @@ from app.api.v1.answer import router as answers_router
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import Response
+from dotenv import load_dotenv
+
+load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent / ".env")
 
 app = FastAPI(title="Amanda Ferreira API", version="1.0.0")
 
