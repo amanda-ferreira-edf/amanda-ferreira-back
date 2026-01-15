@@ -32,7 +32,7 @@ async def update_question_list(question_list: QuestionListOut , db: Session = De
 @router.get("/questions", response_model=List[QuestionOut])
 async def get_all_question(question_list_id: Optional[int] = Query(None),db: Session = Depends(get_db)):
     if question_list_id is None:
-        return db.query(Question).all()
+        return db.query(Question).order_by(Question.questionId).all()
     else:
         question_list = db.query(QuestionList).get(question_list_id)
         if not question_list or question_list.question_id == '':

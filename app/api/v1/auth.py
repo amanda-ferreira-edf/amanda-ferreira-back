@@ -17,7 +17,7 @@ router = APIRouter()
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "10080"))
 
 @router.post("/auth")
 def login(user: LoginDTO, db: Session = Depends(get_db)):
@@ -34,11 +34,13 @@ def login(user: LoginDTO, db: Session = Depends(get_db)):
     
     token = create_access_token({"sub": str(existing_user.idUser), "email": existing_user.email,  "role": existing_user.role})
 
-    return {"access_token": token, "token_type": "bearer", "user": {"idUser": existing_user.idUser, 
-                                                                    "email": existing_user.email, 
-                                                                    "name": existing_user.name,
-                                                                    "role": existing_user.role,
-                                                                    "sended": existing_user.sended}}
+    return {"access_token": token, 
+            "token_type": "bearer", 
+            "idUser": existing_user.idUser, 
+            "email": existing_user.email, 
+            "name": existing_user.name,
+            "role": existing_user.role,
+            "sended": existing_user.sended}
 @router.post("/auth/google")
 def login_google(credential: str = Form(...), db: Session = Depends(get_db)):
     try:
@@ -65,11 +67,13 @@ def login_google(credential: str = Form(...), db: Session = Depends(get_db)):
         )       
     token = create_access_token({"sub": str(existing_user.idUser), "email": existing_user.email,  "role": existing_user.role})
 
-    return {"access_token": token, "token_type": "bearer", "user": {"idUser": existing_user.idUser, 
-                                                                    "email": existing_user.email, 
-                                                                    "name": existing_user.name,
-                                                                    "role": existing_user.role,
-                                                                    "sended": existing_user.sended}}
+    return {"access_token": token, 
+            "token_type": "bearer", 
+            "idUser": existing_user.idUser, 
+            "email": existing_user.email, 
+            "name": existing_user.name,
+            "role": existing_user.role,
+            "sended": existing_user.sended}
 def verify_google_token(token: str):
     idInfo = jwt.get_unverified_claims(token)
 
