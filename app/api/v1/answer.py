@@ -33,6 +33,8 @@ def create_update_answer(answer: AnswerBase, db: Session = Depends(get_db)):
         db.commit()
         db.refresh(db_answer)
         return db_answer
+    if answer.response == None or answer.response == "":
+        return None
     db_answer = Answer(**answer.dict())
     db.add(db_answer)
     db.commit()
